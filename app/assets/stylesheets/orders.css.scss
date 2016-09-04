@@ -1,0 +1,73 @@
+h1,h2,h3,h4,h5,h6 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+}
+
+.pressed {
+  background-color: #ddd;
+}
+
+.btn-default:hover {
+}
+
+h1, a {
+  color: #333;
+}
+
+.btn-primary {
+  color: #ffffff;
+}
+
+.btn-default {
+  border: 1px solid #333;
+  border-radius: 0;
+}
+
+h1 {
+  margin-bottom: 40px;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+  background-color: #D1EEEE
+}
+
+
+.btn-primary.create-order {
+  background-color: #ffffff;
+  color: #333;
+  margin-left: 7px;
+}
+
+.panel-default>.panel-heading, .row.page-header-title, .row.panel-header {
+  background-color: #ffffff;
+}
+
+.panel-group {
+  margin-left: 15px;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #ffffff;
+}
+
+.container.orders-list {
+  //position: fixed;
+  width:100%;
+  height:100%;
+  background-color: #D1EEEE;
+}
+
+.selected {
+  background-color: #f5f5f5;
+}
+
+:focus {
+  outline: 0 !important;
+}
+
+.history {
+  width:100%;
+  height:100%;
+  background-color: #D1EEEE;
+}
+

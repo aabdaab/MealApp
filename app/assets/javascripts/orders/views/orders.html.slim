@@ -1,0 +1,116 @@
+/ InAccordionArray ng-repeat="order in orders track by $index" ng-click="setSelectedOrder(order.id, $index)" ng-class="{selected: $index === indexOfSelectedOrder}"
+container
+  .col-md-8.col-md-offset-2
+    .row.page-header-title
+      h1
+        | ORDERS
+  .row.panel-header
+    .col-md-8.col-md-offset-2
+      .nav.nav-tabs role="tablist"
+        li ng-class="history == false ? 'active' : ''" role="presentation"
+          a aria-controls="active" data-toggle="tab" href="" ng-click="setHistory(false)" role="tab" Active
+        li ng-class="history == true ? 'active' : ''" role="presentation"
+          a aria-controls="history" data-toggle="tab" href="" ng-click="setHistory(true)"  role="tab" History
+div ng-show="!history"
+  .container.orders-list
+    .row
+      .col-md-8.col-md-offset-2
+        .tab-content
+          #orders.tab-pane.active role="tabpanel"
+            form ng-submit="openCreateOrderForm()" style="margin-top:20px"
+              button.btn.btn-primary.create-order type="submit" style=("margin-left: 0; margin-bottom:15px; border-color: #ccc")
+                | + Create Order
+            .row style=("padding-left:10px; padding-bottom:3px") ng-show="orders.length"
+              .col-md-4
+                | Order from
+              .col-md-4
+                | Owner
+              .col-md-2
+                | Price
+              .col-md-2
+                |
+          .row ng-show="orders.length"
+            uib-accordion close-others="false"
+              .panel.panel-default is-open="accordionArray[$index]" uib-accordion-group="" ng-repeat=("order in orders track by $index")
+                uib-accordion-heading
+                  .row
+                    .col-md-4 style=("padding-right:20px; border-right: 1px solid #ccc;")
+                      | {{ order.restaurant_name }}
+                    .col-md-4 style=("padding-right:20px; border-right: 1px solid #ccc;")
+                      | {{ order.owner }}
+                    .col-md-2
+                      | {{ order.price }} zł
+                    .col-md-2
+                      i.pull-right.glyphicon ng-class="{'glyphicon-chevron-up': accordionArray[$index], 'glyphicon-chevron-down': !accordionArray[$index]}"
+
+                .row style="padding-left: 10px; padding-right: 10px"
+                  button.btn.btn-primary.pull-left ng-disabled="order.state === 'Ordered' || order.state === 'Delivered'" ng-click="openAddMealForm(order)"
+                    | + Add Meal
+                  button.pull-right.btn-sm.btn-default ng-disabled="order.state !== 'Delivered'" value="delivered" ng-class="order.state == 'Delivered' ? 'pressed' : ''"
+                    span.glyphicon.glyphicon-ok
+                    |  Delivered
+                  button.pull-right.btn-sm.btn-default ng-disabled="order.state !== 'Ordered'" value="ordered" ng-class="order.state == 'Ordered' ? 'pressed' : ''" ng-model="order.state" style=("border-right-style: none;")
+                    span.glyphicon.glyphicon-earphone
+                    |  Ordered
+                  button.pull-right.btn-sm.btn-default ng-disabled="order.state !== 'Finalized'" value="finalized" ng-class="order.state == 'Finalized' ? 'pressed' : ''" ng-model="order.state" style=("border-right-style: none; border-left-style: none;")
+                    span.glyphicon.glyphicon-lock
+                    |  Finalized
+                  button.pull-right.btn-sm.btn-default ng-disabled="order.state !== 'launched'" value="launched" ng-class="order.state == 'launched' ? 'pressed' : ''" ng-model="order.state"
+                    span.glyphicon.glyphicon-pencil
+                    |  Opened
+                  span.pull-right style=("padding: 5px 10px;") Status:
+                .row
+                  .form-vertical style="margin-top: 15px"
+                    .col-md-4 style="color: #ccc"
+                      | Meal
+                    .col-md-4 style="color: #ccc"
+                      | Orderer
+                    .col-md-2 style="color: #ccc"
+                      | Price
+                    .col-md-2
+                      |
+                .row style=("padding:10px 13px")
+                  .row style="margin-top: 5px;" ng-click=""
+                    .col-md-4 style="padding-top: 7px" ng-show="!edit"
+                      span ng-show="order.meal"
+                        | {{ order.meal }}
+                      span ng-show="!order.meal"
+                        | No meal yet.
+                    .col-md-4 style="padding-top: 7px"
+                      | {{ order.owner }}
+                    .col-md-2 style="padding-top: 7px"
+                      | {{ order.price }} zł
+                    .col-md-2 style="padding-top: 7px"
+                      i.pull-right.glyphicon.glyphicon-trash ng-show="order.state !== 'Ordered' && order.state !== 'Delivered'" ng-click="deleteOrder(order)"
+                      i.pull-right.glyphicon.glyphicon-edit style="margin-right: 4px" ng-show="order.state !== 'Ordered' && order.state !== 'Delivered'" ng-click="openEditMealForm(order)"
+                .row style="padding-left: 10px; padding-right: 10px"
+                  button.btn.btn-primary.pull-right ng-disabled="order.state === 'Ordered' || order.state === 'Delivered'" ng-click="orderIt(order)"
+                    | Order
+div ng-show="history"
+  .container.history
+    .row style= " "
+      .col-md-8.col-md-offset-2
+        .tab-content
+          .row ng-show="delivered.length" style="margin-top: 15px"
+            .col-md-4 
+              | Restaurant & Meal
+            .col-md-4 
+              | Owner
+            .col-md-2 
+              | Price
+            .col-md-2 
+              | Delivered at
+          .row ng-show="delivered.length" style=("padding-left:10px; padding-bottom:3px; margin-top: 4px") ng-repeat="order in delivered track by $index"
+            .panel.panel.default 
+              .row style="margin-top: 5px; padding-right: 25px"
+                .col-md-4 style="padding-left: 20px; padding-bottom: 7px;"
+                  | {{ order.restaurant_name }} - {{ order.meal }}
+                .col-md-4 style="padding-left: 20px; padding-bottom: 7px;"
+                  | {{ order.owner }}
+                .col-md-2 style="padding-left: 25px; padding-bottom: 7px;"
+                  | {{ order.price }} zł
+                .col-md-2 style="padding-left: 25px;"
+                  | {{ order.date }}
+          .row ng-show="!delivered.length"
+            .col-md-4 style="padding: 10px 12px"
+              | No history yet.

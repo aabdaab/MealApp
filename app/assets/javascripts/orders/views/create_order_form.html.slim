@@ -1,0 +1,32 @@
+modal#create-order-form
+  .modal-header
+    span.glyphicon.glyphicon-remove.pull-right ng-click='close()'
+    h3 Create Order
+  .modal-body
+    form novalidate="novalidate" name='createOrderForm'
+      content
+        div layout="horizontal"
+          div flex="100"
+            content.padding
+              .form-group
+                span.padding style="color: #333; padding: 5px" Orders from
+                select.form-control name="restaurantName" data-container="body" ng-model="restaurant_name" required="required"
+                  option ng-repeat=("restaurant in restaurants") value=("{{ restaurant.name }}") {{restaurant.name }}
+                
+              div ng-show=("createOrderForm.$submitted")
+                div ng-show="createOrderForm.restaurantName.$error.required && createOrderForm.restaurantName.$touched"
+                  .alert.alert-danger
+                    strong Hey!
+                    |  You have to pick a restaurant.
+              .form-group
+                span.padding style="color: #333; padding: 5px" Owner Name
+                select.form-control name="userName" data-container="body" ng-model="owner" required="required"
+                  option ng-repeat=("user in users") value=("{{ user.id }}") {{user.first_name}} {{ user.last_name }}
+              div ng-show=("createOrderForm.$submitted")
+                div ng-show="createOrderForm.userName.$error.required && createOrderForm.userName.$touched"
+                  .alert.alert-danger
+                    strong Hey!
+                    |  You have to pick a username.
+              .modal-footer
+                button.btn.btn-warning ng-click="close()" Cancel
+                button.btn.btn-primary ng-click="createOrder()" Create
